@@ -8,6 +8,7 @@ import sys
 import queue
 import shutil
 import threading
+import webbrowser
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
@@ -41,6 +42,7 @@ MUTED = "#9CA3AF"
 VERDE = "#3DD68C"
 
 PASTA_PADRAO = str(Path.home() / "Music" / "Baixador MP3")
+GITHUB_URL = "https://github.com/EduTremea"
 QUALIDADES = {"Máxima": "0", "192 kbps": "192", "128 kbps": "128"}
 
 ID_VIDEO = re.compile(r"[A-Za-z0-9_-]{11}")
@@ -199,6 +201,7 @@ class App(ctk.CTk):
         self._card_config()
         self._barra_acoes()
         self._card_progresso()
+        self._credito()
 
         self.protocol("WM_DELETE_WINDOW", self._fechar)
         self.after(100, self._processar_fila)
@@ -333,9 +336,19 @@ class App(ctk.CTk):
         self.btn_abrir = self._botao_sec(b, "Abrir pasta", self.abrir_pasta, altura=44, largura=110)
         self.btn_abrir.grid(row=0, column=2, padx=(8, 0))
 
+    def _credito(self):
+        """Link do GitHub no canto inferior direito."""
+        lnk = ctk.CTkLabel(self.rodape, text="github.com/EduTremea", font=self.f_pequena,
+                           text_color=MUTED, cursor="hand2")
+        lnk.grid(row=2, column=0, sticky="e", padx=18, pady=(0, 8))
+        lnk.bind("<Button-1>", lambda _e: webbrowser.open(GITHUB_URL))
+        lnk.bind("<Enter>", lambda _e: lnk.configure(text_color=ACCENT,
+                                                       font=ctk.CTkFont(size=12, underline=True)))
+        lnk.bind("<Leave>", lambda _e: lnk.configure(text_color=MUTED, font=self.f_pequena))
+
     def _card_progresso(self):
         c = self._card(1, pai=self.rodape)
-        c.grid_configure(pady=(0, 14))
+        c.grid_configure(pady=(0, 4))
         c.grid_columnconfigure(0, weight=1)
         c.grid_columnconfigure(1, weight=0)     # barras ocupam a largura toda
 

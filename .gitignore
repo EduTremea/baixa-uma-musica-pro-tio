@@ -1,0 +1,17 @@
+# Saídas do build
+dist/
+build/
+*.spec
+
+# Ambiente e binários baixados pelo build.bat
+.venv-build/
+bin/
+deno.zip
+
+# Python
+__pycache__/
+*.pyc
+
+# Windows
+Thumbs.db
+desktop.ini
